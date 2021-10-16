@@ -1,0 +1,93 @@
+//链队列实现方法
+#include<iostream>
+using namespace std;
+#define Ele int
+#define MAXSIZE 100
+typedef struct Qnode {
+	Ele data;
+	struct Qnode *next;
+}Qnode,*QueuePtr;
+typedef struct {
+	QueuePtr front;
+	QueuePtr rear;
+}Linkqueue;
+//初始化
+int Init(Linkqueue &Q)
+{
+
+	Q.front = Q.rear = new Qnode;
+	Q.front->next = NULL;
+	return 1;
+}
+//入队
+bool Enqueue(Linkqueue &Q, Ele e)
+{
+	Qnode *p;
+	p = new Qnode;
+	p->data = e;
+	p->next = NULL;
+	Q.rear->next = p;
+	Q.rear = p;
+	return 1;
+}
+//出队
+int Dequeue(Linkqueue &Q, Ele e)
+{
+	if (Q.front == Q.rear)
+		return 0;
+	Qnode *p;
+	p = Q.front->next;
+	e = p->data;
+	Q.front->next = p->next;
+	if (Q.rear == p)
+		Q.rear = Q.front;
+	delete p;
+	return e;
+}
+//取队头元素
+Ele get_head(Linkqueue Q)
+{
+	if (Q.rear != Q.front)
+		return Q.front->next->data;
+
+}
+//依次打印队列元素
+void printQueue(Linkqueue Q)
+{
+	
+	Qnode *p = Q.front->next;
+	while (p)
+	{
+		cout << p->data<<endl;
+		p = p->next;
+	}
+
+}
+//主函数
+int main()
+{
+	Linkqueue Q;
+	Init(Q);
+	int e,M;
+	cout << "请输入队首元素：(输入-1来结束)\n";
+	cin >> e;
+	while (e!=-1)
+	{
+		Enqueue(Q, e);
+		cout << "输入下一个元素：(输入-1来结束)\n";
+		cin >> e;
+	}
+	cout << endl;
+	printQueue(Q);
+	cout << "取队头测试：\n";
+	M=get_head(Q);
+	cout << M<<endl;
+	cout << "出队测试：\n";
+	while (Q.front!=Q.rear) {
+		cout << endl;
+		Dequeue(Q, e);
+		printQueue(Q);
+	}
+}
+
+
