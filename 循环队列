@@ -1,0 +1,89 @@
+//循环队列
+#include<iostream>
+using namespace std;
+#define MAXSIZE 100
+#define Ele int
+typedef struct {
+	Ele *base;
+	int front;
+	int rear;
+
+}Squeue;
+//初始化
+bool Init(Squeue &Q)
+{
+	Q.base = new Ele[MAXSIZE];
+	if (!Q.base)
+		return 0;
+	Q.front = Q.rear = 0;
+	return 1;
+}
+//返回队列长度
+int QueueLength(Squeue Q)
+{
+	return (Q.rear - Q.front + MAXSIZE) % MAXSIZE;
+
+}
+//入队
+bool Enqueue(Squeue &Q, Ele e)
+{
+	if ((Q.rear + 1) % MAXSIZE == Q.front)
+		return 0;
+	Q.base[Q.rear] = e;
+	Q.rear = (Q.rear + 1) % MAXSIZE;
+	return 1;
+}
+//出队
+int Dequeue(Squeue &Q, Ele &e)
+{
+	if (Q.front == Q.rear)
+		return 0;
+	e = Q.base[Q.front];
+	Q.front = (Q.front + 1) % MAXSIZE;
+	return e;
+}
+//取循环队列头元素
+Ele get_head(Squeue Q)
+{
+	if (Q.front != Q.rear)
+		return Q.base[Q.front];
+
+}
+//依次打印队列元素
+void printQueue(Squeue Q)
+{
+	
+	while (Q.rear!=Q.front)
+	{	
+		cout << Q.base[Q.front] << endl;
+		Q.front = (Q.front + 1) % MAXSIZE;
+
+	}
+
+}
+int main()
+{
+	Squeue q;
+	Init(q);
+	int  e,M;
+	cout << "请输入队首元素：(输入-1来结束)\n";
+	cin >> e;
+	while (e!=-1)
+	{
+		Enqueue(q, e);
+		cout << "输入下一个元素：(输入-1来结束)\n";
+		cin >> e;
+	}
+	printQueue(q);
+	cout << "取队头测试：\n";
+	M = get_head(q);
+	cout << "队头元素：" << M<<endl;
+	cout << "出队测试："<<endl;
+	while (q.front!=q.rear)
+	{
+		cout << endl;
+		Dequeue(q, e);
+		printQueue(q);
+	}
+	return 0;
+}
