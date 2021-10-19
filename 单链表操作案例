@@ -1,0 +1,206 @@
+#include<iostream>
+#include<cstdlib>
+#include<cstring>
+#define Book int
+#define Status int
+#define MAXSIZE 100
+using namespace std;
+typedef struct  Node
+{
+	Book data;	//数据域
+	struct Node *next;//指针域
+};
+typedef struct Node *LinkList;
+//初始化链表
+int InitList(LinkList&L)
+{
+	L = new Node;
+	L->next = NULL;
+	return 1;
+}
+//尾插法建立
+
+//输出链表
+void PrintList(LinkList L)
+{
+	cout << "输出链表元素：";
+	Node *p;
+	p = L->next;
+	while (p != NULL)
+	{
+		cout << p->data<<"\t";
+		p = p->next;
+	}
+	cout << endl;
+}
+//尾插法创建
+int Create(LinkList&L)
+{
+	int n, e;
+	Node*temp = L;
+	cout << "请输入要创建的元素个数：";
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+
+		Node *p = new Node;
+		cout << "请输入第" << i+1 << "个元素的值：" << endl;
+		cin >> e;
+		p->data = e;
+		temp->next = p;
+		p->next = NULL;
+		temp = temp->next;
+	}
+	return 1;
+}
+//插入元素
+int ListInsert(Node*L, int i, Book e)
+{
+	Node *p = L;
+	int j = 0;
+	while (p && (j < i - 1))
+	{
+		p = p->next;
+		++j;
+	}
+	if (!p || j > i - 1)
+		return 0;
+	Node *s = new Node;
+	s->data = e;
+	s->next = p->next;
+	p->next = s;
+	return 1;
+}
+int Inster(Node*L)
+{
+	int i, e, flag;
+	cout << "请输入要插入的位置：";
+	cin >> i >> e;
+	flag = ListInsert(L, i, e);
+	if (flag)
+	{
+		cout << "插入成功！";
+		PrintList(L);
+	}
+	else
+		cout << "插入失败";
+	return 1;
+}
+//单链表删除
+int DeleteList(Node*L, int i)
+{
+	Node *p = L;
+	int j = 0;
+	while ((p->next) && (j < i - 1))
+	{
+		p = p->next;
+		++j;
+	}
+	if (!(p->next) || (j > i - 1))
+		return 0;
+	Node *q;
+	q = p->next;//临时保存以备释放
+	p->next = q->next;
+	delete q;
+	return 1;
+}
+int Delete(Node*L)
+{
+	int i, flag;
+	cout << "请输入需要删除的位置（从1开始）";
+	cin >> i;
+	flag = DeleteList(L, i);
+	if (flag)
+	{
+		cout << "删除成功！";
+		PrintList(L);
+	}
+	else
+	{
+		cout << "删除失败！！";
+	}
+	return 1;
+
+}
+//按值查找
+int LocateBOOK(Node*L, Book e)
+{
+	int i = 1;
+	Node *p = L->next;
+	while (p&&p->data != e)
+	{
+		p = p->next;
+		i++;
+	}
+	if (p)
+		return i;
+	else
+		return 0;
+
+}
+int Search(Node*L)
+{
+	int flag;
+	Book e;
+	cout << "请输入需要查找的值：";
+	cin >> e;
+	flag = LocateBOOK(L, e);
+	if (flag)
+		cout << "元素位置为" << flag << endl;
+	else
+		cout << "未找到该元素！";
+	return 1;
+
+}
+int Search_t(LinkList L)
+{
+	int n,N=0;
+	cout << "输入查找位置：";
+	cin >> n;
+	Node *p;
+	p = L->next;
+	while (N<n-1)
+	{
+		N++;
+		p = p->next;
+	
+	}
+	cout << "该位置数据为" << p->data<<endl;
+	return p->data;
+
+
+}
+void menu()
+{	
+	cout << "1.创建------2.插入\n";
+	cout << "3.删除------4.按值查找\n";
+	cout << "5:按位查找";
+	cout << "6.输出------7.退出\n";
+	cout << endl;
+
+}
+int main()
+{
+
+	Node*L;
+	InitList(L);
+	int choice, len;
+	while (1)
+	{
+		menu();
+		cout << "请输入菜单序号";
+		cin >> choice;
+		if (choice == 7)
+			break;
+		switch (choice)
+		{
+		case 1:Create(L); break;
+		case 2:Inster(L); break;
+		case 3:Delete(L); break;
+		case 4:Search(L); break;
+		case 5:Search_t(L); break;
+		case 6:PrintList(L); break;
+		default:cout << "输入错误！！！";
+		}
+	}
+}
