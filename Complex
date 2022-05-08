@@ -1,0 +1,92 @@
+#include<iostream>
+using namespace std;
+class Complex {
+private:
+	double  real;//实部
+	double	image;//虚部
+public:
+	Complex(double r, double i);
+	Complex add(const Complex& t);//加
+	Complex minus(const Complex& t);//减
+	Complex mul(const Complex& t);//乘
+	Complex mul_1(double a);//倍
+	void conjugate();//共轭
+	void display();
+	Complex(Complex& a);
+};
+Complex::Complex(double r = 0, double i = 0)//构造函数
+{
+	real = r;
+	image = i;
+}
+Complex::Complex(Complex& a)//拷贝构造函数
+{
+	real = a.real;
+	image = a.image;
+
+}
+void Complex::display ( )
+{
+	cout << "复数为"<<real<<"+"<<image<<"i"<<endl;
+
+}
+Complex Complex::add(const Complex& t)
+{
+	Complex temp;
+	temp.image = image + t.image;
+	temp.real = real + t.real;
+	return temp;
+}
+Complex Complex::minus(const Complex & t)
+{
+	Complex temp;
+	temp.image = image- t.image;
+	temp.real = real -t.real;
+	return temp;
+}
+Complex Complex::mul(const Complex& t)
+{
+	Complex temp;
+	temp.image = real * t.image + image * t.real;
+	temp.real = real * t.real - image * t.image;
+	return temp;
+}
+Complex Complex::mul_1(double a)
+{
+	Complex temp;
+	temp.image = a*image;
+	temp.real = a * real;
+	return temp;
+}
+void Complex::conjugate()
+{
+	Complex temp;
+	temp.real = real;
+	temp.image = -image;
+	cout << "共轭复数是" << temp.real << "+" << temp.image << "i" << endl;
+}
+
+int main()
+{	
+	Complex c,d,e,f;
+	Complex a(1, 2);
+	Complex b(2, 3);
+	a.display();
+	b.display();
+	cout << "加法测试：" << endl;
+	c=a.add(b);
+	c.display();
+	cout << "减法测试：" << endl;
+	d = a.minus(b);
+	d.display();
+	cout << "共轭测试：" << endl;
+	a.conjugate();
+	b.conjugate();
+	cout << "乘法测试：" << endl;
+	e = a.mul(b);
+	e.display();
+	cout << "倍数测试：" << endl;
+	f = a.mul_1(2);
+	f.display();
+	return 0;
+}
